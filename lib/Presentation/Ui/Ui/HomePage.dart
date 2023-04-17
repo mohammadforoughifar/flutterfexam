@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../Ui_Helper/HomePageView.dart';
+
 class HomePage extends StatefulWidget {
-  var controller;
-   HomePage({Key? key,required this.controller}) : super(key: key);
+
+   HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final PageController _pageController=PageController(
+    initialPage: 0
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +33,17 @@ class _HomePageState extends State<HomePage> {
                      width: double.infinity,
                      child: Stack(
                        children: [
-                        // HomePageView(),
+                         HomePageView(controller: _pageController,),
                          Align(
                            alignment: Alignment.bottomCenter,
-                           child:AnimatedSmoothIndicator(
-                             activeIndex: controll,
-                             count:  6,
-                             effect:  WormEffect(),
+                           child:SmoothPageIndicator(
+                             onDotClicked: (index)=>_pageController.animateToPage(index, duration: Duration(milliseconds: 400), curve: Curves.bounceInOut),
+                             controller:_pageController,
+                             count:  4,
+                             effect:  ExpandingDotsEffect(
+                               dotWidth: 10,
+                               dotHeight: 10
+                             ),
                            )   ,
                          )
                        ],
